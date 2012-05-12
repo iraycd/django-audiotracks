@@ -209,8 +209,8 @@ class TestViews(TestCase):
         assert 'Bob Track 2' in resp.content
         assert 'Bob Track 1' not in resp.content
 
-        # Get oldest tracks alice
-        self.client.login(username='alice', password='secret')
+        # Get oldest tracks from alice while being logged out
+        self.client.logout()
         resp = self.client.get('/alice/music/tracks/2')
         assert 'Alice Track 1' in resp.content
         assert 'Alice Track 2' not in resp.content
