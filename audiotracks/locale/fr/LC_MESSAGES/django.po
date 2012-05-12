@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-26 18:52+0700\n"
+"POT-Creation-Date: 2012-05-12 11:35+0200\n"
 "PO-Revision-Date: 2011-04-24 13:37+007\n"
 "Last-Translator: Alex Marandon <contact@alexmarandon.com>\n"
 "Language-Team: Alex Marandon <contact@alexmarandon.com>\n"
@@ -47,51 +47,57 @@ msgstr "Podcast de %(username)s sur %(site_name)s"
 msgid "Audio tracks posted on %(site_name)s by %(username)s"
 msgstr "Pistes audio sur %(site_name)s par %(username)s"
 
-#: models.py:46
+#: models.py:50
 msgid "Audio file"
 msgstr "Fichier audio"
 
-#: models.py:47
+#: models.py:51
 msgid "Image"
 msgstr ""
 
-#: models.py:49
+#: models.py:53
 msgid "Title"
 msgstr "Titre"
 
-#: models.py:50
+#: models.py:54
 msgid "Artist"
 msgstr "Artiste"
 
-#: models.py:51
+#: models.py:55
 msgid "Genre"
 msgstr ""
 
-#: models.py:52
+#: models.py:56
 #, fuzzy
 msgid "Date"
 msgstr "Date"
 
-#: models.py:53
-msgid "Tags"
-msgstr ""
-
-#: models.py:54
+#: models.py:57
 msgid "Description"
 msgstr ""
 
-#: models.py:55
+#: models.py:58
 msgid "Slug (last part of the url)"
 msgstr "Slug (dernière partie de l'URL)"
 
-#: views.py:85
+#: views.py:134
 msgid "Your changes have been saved."
 msgstr "Vous changements ont été enregistrés"
 
-#: views.py:117
+#: views.py:170
 #, python-format
 msgid "\"%s\" has been deleted."
 msgstr "« %s » a été supprimé."
+
+#: templates/audiotracks/_list_actions.html:2
+#: templates/audiotracks/detail.html:35
+msgid "Edit"
+msgstr "Éditer"
+
+#: templates/audiotracks/_list_actions.html:3
+#: templates/audiotracks/detail.html:36
+msgid "Delete"
+msgstr "Supprimer"
 
 #: templates/audiotracks/base.html:23
 msgid "Latest tracks"
@@ -118,16 +124,6 @@ msgstr "Oui, supprimer définitivement ce morceau !"
 msgid "Download Track"
 msgstr "Télécharger ce morceau"
 
-#: templates/audiotracks/detail.html:35 templates/audiotracks/latest.html:13
-#: templates/audiotracks/user_index.html:11
-msgid "Edit"
-msgstr "Éditer"
-
-#: templates/audiotracks/detail.html:36 templates/audiotracks/latest.html:14
-#: templates/audiotracks/user_index.html:12
-msgid "Delete"
-msgstr "Supprimer"
-
 #: templates/audiotracks/edit.html:11
 msgid "Edit track"
 msgstr "Édition du morceau"
@@ -136,11 +132,11 @@ msgstr "Édition du morceau"
 msgid "Delete image"
 msgstr "Supprimer l'image"
 
-#: templates/audiotracks/edit.html:70
+#: templates/audiotracks/edit.html:72
 msgid "Save your changes"
 msgstr "Enregistrer vos changements"
 
-#: templates/audiotracks/edit.html:78
+#: templates/audiotracks/edit.html:80
 msgid "Delete this track"
 msgstr "Supprimer ce morceau"
 
@@ -148,19 +144,23 @@ msgstr "Supprimer ce morceau"
 msgid "Latest Tracks"
 msgstr "Derniers Morceaux"
 
-#: templates/audiotracks/new.html:9
+#: templates/audiotracks/new.html:10
 msgid "Upload a new track"
 msgstr "Poster un nouveau morceau"
 
-#: templates/audiotracks/new.html:12
+#: templates/audiotracks/new.html:14
 msgid "Upload"
 msgstr "Envoyer"
 
-#: templates/audiotracks/user_index.html:5
-msgid "Your Tracks"
-msgstr "Vos morceaux"
+#: templates/audiotracks/user_index.html:6
+#, python-format
+msgid "Tracks from %(username)s"
+msgstr "Morceaux de %(username)s"
 
-#: templates/audiotracks/user_index.html:10
+#: templates/audiotracks/user_index.html:13
 #, python-format
 msgid "last modified %(last_modified)s ago"
 msgstr "modifié il y a %(last_modified)s"
+
+#~ msgid "Your Tracks"
+#~ msgstr "Vos morceaux"
