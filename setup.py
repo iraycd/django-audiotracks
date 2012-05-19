@@ -9,7 +9,7 @@ setup(
     author='Alex Marandon',
     license='MIT',
     author_email='contact@alexmarandon.com',
-    url='https://github.com/alex-marandon/django-audiotracks',
+    url='https://github.com/amarandon/django-audiotracks',
     packages=find_packages(),
     classifiers=[
         'Development Status :: 3 - Alpha',

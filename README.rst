@@ -31,7 +31,7 @@ ___________
 
 Clone the repository with::
 
-    $ git clone git://github.com/alex-marandon/django-audiotracks.git
+    $ git clone git://github.com/amarandon/django-audiotracks.git
 
 Then install the ``audiotracks`` package in your Python path. A ``setup.py`` script is provided. You
 can use it with a command such as::
