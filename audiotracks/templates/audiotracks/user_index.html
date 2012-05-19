@@ -2,7 +2,9 @@
 {% load i18n %}
 
 {% block body %}
-<h1>{% trans 'Your Tracks' %}</h1>
+<h1>
+  {% blocktrans %}Tracks from {{ username }}{% endblocktrans %}
+</h1>
 <ul class="audiotracks-list">
 {% for track in tracks %}
 <li>

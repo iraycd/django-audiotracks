@@ -11,6 +11,7 @@ from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
+from django.contrib.auth.models import User
 
 import mutagen
 from mutagen.easyid3 import EasyID3KeyError
@@ -55,7 +56,8 @@ def index(request, username=None, page_number=None):
 
 
 def user_index(request, username, page_number=None):
-    tracks = request.user.tracks.order_by('-created_at').all()
+    user = get_object_or_404(User, username=username)
+    tracks = user.tracks.order_by('-created_at').all()
     page, tracks = paginate(tracks, page_number)
     base_path = urlresolvers.reverse('user_index', args=[username])
     return render_to_response("audiotracks/user_index.html", {
