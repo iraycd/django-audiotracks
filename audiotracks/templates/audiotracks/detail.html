@@ -11,7 +11,11 @@
   </div>
   {% endif %}
   <div class="audiotracks-download">
-    <a class="btn btn-large btn-success" href="{{ track.audio_file.url }}">{% trans 'Download Track' %}</a>
+    <a class="btn btn-large btn-success" href="{{ track.audio_file.url }}">
+      {% blocktrans with size=track.audio_file.size|filesizeformat  type=track.filetype %}
+      Download {{ type }} file ({{size}})
+      {% endblocktrans %}
+    </a>
   </div>
 {% if track.user == request.user %}
 <p>

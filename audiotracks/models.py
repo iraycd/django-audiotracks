@@ -75,7 +75,18 @@ class AbstractTrack(models.Model):
 
     @property
     def mimetype(self):
-        return mimetypes.guess_type(self.audio_file.path)[0]
+        if not hasattr(self, '_mimetype'):
+            self._mimetype = mimetypes.guess_type(self.audio_file.path)[0]
+        return self._mimetype
+
+    @property
+    def filetype(self):
+        if '/' in self.mimetype:
+            type_names = {'mpeg': 'MP3', 'ogg': 'Ogg Vorbis'}
+            filetype = self.mimetype.split('/')[1]
+            return type_names.get(filetype, filetype)
+        else:
+            return self.mimetype
 
     @models.permalink
     def get_absolute_url(self):

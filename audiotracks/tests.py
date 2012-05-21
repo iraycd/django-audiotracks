@@ -69,6 +69,7 @@ class TestViews(TestCase):
         self.do_upload('ogg')
         track = self.verify_upload()
         self.assertEquals(track.mimetype, "audio/ogg")
+        self.assertEquals(track.filetype, "Ogg Vorbis")
 
     def test_upload_flac(self):
         "Flac file upload"

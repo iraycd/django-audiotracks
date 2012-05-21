@@ -1,3 +1,2 @@
 - upload progress bar
-- display file type and size for each track
 - m3u playlists
