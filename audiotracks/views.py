@@ -10,6 +10,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_exempt
+from django.views.generic import TemplateView
 from django.contrib import messages
 from django.contrib.auth.models import User
 
@@ -169,3 +170,12 @@ def delete_track(request):
     messages.add_message(request, messages.INFO,
             ugettext('"%s" has been deleted.') % track.title)
     return HttpResponseRedirect(request.POST.get('came_from', '/'))
+
+
+class JavaScriptView(TemplateView):
+
+    def render_to_response(self, context, **response_kwargs):
+        response_kwargs['content_type'] = "application/javascript"
+        return super(JavaScriptView, self).render_to_response(context, **response_kwargs)
+
+player_script = JavaScriptView.as_view(template_name="audiotracks/player.js")

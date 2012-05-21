@@ -14,6 +14,7 @@
       .messages li { list-style: none; }
       .errorlist { color: red; list-style: none; display: inline; }
     </style>
+    {% block extra_head %}{% endblock %}
   </head>
   <body>
 
@@ -37,8 +38,8 @@
   </ul>
   {% endif %}
 
-  {% block body %}
-  {% endblock %}
+  {% block body %}{% endblock %}
+  {% block extra_body %}{% endblock %}
   </body>
 </html>
 

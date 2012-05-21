@@ -108,3 +108,37 @@ ul.audiotracks-list li {
 #id_description { width: 630px; }
 .btn.small { padding: 2px; }
 .audiotracks-download { margin: 16px 0; }
+
+.audiotracks-list-entry {
+  padding: 24px 0;
+  border-color: #eee;
+  border-style: solid;
+  border-width: 1px 0;
+}
+
+.audiotracks-list-entry:not(:first-child) {
+  border-top: 0;
+}
+
+.audiotracks-list-entry .track-title {
+  font-size: 24px;
+}
+
+.track-image {
+  float: left;
+  margin-right: 10px;
+}
+
+.audiotracks-detail .track-image {
+  display: none;
+}
+
+.audiotracks-detail .audiotracks-list-entry {
+  margin: 12px 12px 24px 12px;
+  float: left;
+  width: 596px; /* 820 - 200 - (2 * 12) */
+}
+
+.audiotracks-detail img:first-child {
+  float: left;
+}

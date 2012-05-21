@@ -13,12 +13,12 @@
     <![endif]-->
 
     <!-- Le styles -->
-    <link rel="stylesheet" href="{{ MEDIA_URL }}css/bootstrap-2.0.css">
-    <link rel="stylesheet" href="{{ MEDIA_URL }}css/style.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap-2.0.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/style.css"> 
+    {% block extra_head %}{% endblock %}
   </head>
 
   <body>
-
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
@@ -48,8 +48,8 @@
     <div class="container">
 
       <div class="content">
-        {% block body %}
-        {% endblock %}
+        {% block body %}{% endblock %}
+        {% block extra_body %}{% endblock %}
       </div>
 
       <footer>

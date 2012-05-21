@@ -1,5 +1,7 @@
 from django.conf.urls.defaults import *
+
 from audiotracks import feeds
+
 
 urlpatterns = patterns("audiotracks.views",
     url("^/?$", "index", name="audiotracks"),
@@ -13,4 +15,5 @@ urlpatterns = patterns("audiotracks.views",
     url("^/tracks$", "user_index", name="user_index"),
     url("^/tracks/(?P<page_number>\d)/?$", "user_index", name="user_index"),
     url("^/feed/?$", feeds.choose_feed, name="tracks_feed"),
+    url("^/player.js$", "player_script", name="player_script")
 )

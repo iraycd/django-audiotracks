@@ -1,4 +1,4 @@
-{% extends "audiotracks/base.html" %}
+{% extends "audiotracks/mediaelement_base.html" %}
 {% load i18n %}
 
 {% block body %}
@@ -7,11 +7,7 @@
 </h1>
 <ul class="audiotracks-list">
 {% for track in tracks %}
-<li>
-    {% include 'audiotracks/_list_actions.html' %}
-<a href="{% url track_detail username,track.slug %}">{{ track.title }}</a>
-{% blocktrans with track.updated_at|timesince as last_modified %}last modified {{ last_modified }} ago{% endblocktrans %}
-</li>
+    {% include "audiotracks/listing_item.html" %}
 {% endfor %}
 </ul>
 
