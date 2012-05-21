@@ -1,7 +1,8 @@
 $(document).ready(function() {
 
   function playNext(domObj) {
-    var next_audio_elem = $(domObj).parents('.audiotracks-list-entry').next().find('audio').get(0);
+    var next_audio_elem = $(domObj).parents('.audiotracks-list-entry')
+                                   .next().find('audio').get(0);
     if (next_audio_elem) {
       var player = next_audio_elem.player;
       // FIXME
@@ -19,13 +20,29 @@ $(document).ready(function() {
     }
   }
 
+  function setPlayingTitle(domObj) {
+    var title = $(domObj).parents('.audiotracks-list-entry')
+                         .find('.track-title').text();
+    $('title').html('&#9654; ' + title);
+  }
+
+  var oldTitle = $('title').html();
+
+  function revertTitle() {
+    $('title').html(oldTitle);
+  }
+
   $('audio').mediaelementplayer({
     audioWidth: '100%', 
     pluginPath: '{{ STATIC_URL }}mediaelement-2.8.2/',
     success: function(me, domObj) {
       var container = $(domObj).parents('.player-container');
       container.next().find('.audio-type').html( me.pluginType );
+
+      $(me).bind('play', function() { setPlayingTitle(domObj); });
+      $(me).bind('pause', revertTitle);
       $(me).bind('ended', function() { playNext(domObj); });
+
       var firstPlayer = mejs.players[0];
       if (me === firstPlayer.media && location.search.indexOf('autoplay=true') != -1) {
         firstPlayer.play();
