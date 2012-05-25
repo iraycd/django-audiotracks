@@ -2,9 +2,9 @@ from setuptools import setup, find_packages
  
 setup(
     name='django-audiotracks',
-    version='0.1.1',
+    version='0.2',
     description='A pluggable Django app to publish audio tracks',
-    long_description=open("README.rst").read(),
+    long_description=open("README.rst").read() + open("CHANGES.rst").read(),
     keywords='django audio sound',
     author='Alex Marandon',
     license='MIT',

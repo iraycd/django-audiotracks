@@ -13,6 +13,10 @@ default ``Track`` model, a set of views, default templates, podcast feeds and
 sensible default URL configuration.  It uses mutagen_ to extract metadata from
 audio files.  PIL is required to process images that can be attached to tracks.  
 
+Default templates include the audio player from MediaElement.js_. I've added
+some custom code for listing pages so that when a track ends playing, the next
+one starts playing automatically.
+
 
 Installation
 ~~~~~~~~~~~~
@@ -111,10 +115,7 @@ used in the query to select the track. For example, if the app is mounted using
 the pattern ``"^(?P<username>[\w\._-]+)/music"``, a URL such as
 /bob/music/track/love-forever will look for the track which slug is love-forever
 and has been uploaded by bob. A user who is logged in and owns the track can see
-links to the edit page for this track. The default template just uses the HTML5
-audio element to embed the track on the page, but of course you can replace it
-with a more sophisticated solution such as JavaScript player with Flash
-fallback. 
+links to the edit page for this track. 
 
 Delete
 ______
@@ -210,3 +211,4 @@ Use this setting to specify how many tracks to display per listing page.
 .. _`mutagen`: http://code.google.com/p/mutagen/
 .. _`ROOT_URLCONF`: http://docs.djangoproject.com/en/dev/ref/settings/#std:setting-ROOT_URLCONF
 .. _M3U: https://en.wikipedia.org/wiki/M3U
+.. _MediaElement.js: http://mediaelementjs.com/
