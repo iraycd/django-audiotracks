@@ -153,11 +153,19 @@ Podcast feeds
 _____________
 
 * View function ``feeds.choose_feed``
-* Default URL: <app_mount_point>/feed or <app_mount_point_containing_username>/feed
+* Default URL: <app_mount_point>/feed and <app_mount_point_containing_username>/feed
 
 Choose user feed or global feed depending on whether or not URL contains a
 ``username`` parameter
 
+
+M3U playlists
+_____________
+
+* View function ``views.m3u``
+* Default URLs: <app_mount_point>/m3u and <app_mount_point_containing_username>/m3u
+
+Serve an M3U_ playlist file.
 
 Configuration
 ~~~~~~~~~~~~~
@@ -201,3 +209,4 @@ Use this setting to specify how many tracks to display per listing page.
 .. _`Django`: http://djangoproject.com
 .. _`mutagen`: http://code.google.com/p/mutagen/
 .. _`ROOT_URLCONF`: http://docs.djangoproject.com/en/dev/ref/settings/#std:setting-ROOT_URLCONF
+.. _M3U: https://en.wikipedia.org/wiki/M3U
