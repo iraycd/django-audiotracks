@@ -41,12 +41,12 @@ class TestViews(TestCase):
             'audio_file': filehandle
             })
 
-    def do_upload_as_user(self, username):
+    def do_upload_as_user(self, username, ext='ogg'):
         response = self.client.logout()
         response = self.client.login(username=username, password='secret')
-        self.do_upload('ogg')
+        self.do_upload(ext)
         self.assert_(os.path.exists(os.path.join(settings.MEDIA_ROOT,
-            "audiotracks", "audio_files", username, "audio_file.ogg")),
+            "audiotracks", "audio_files", username, "audio_file.%s" % ext)),
             "Upload path should contain username")
 
     def verify_upload(self):
@@ -252,3 +252,24 @@ class TestViews(TestCase):
         _, existing_alice_track, new_alice_track = Track.objects.all()
         self.assertEquals(new_alice_track.slug,
                           'django-audiotracks-test-file-2')
+
+    def test_m3u(self):
+        "m3u playlists"
+        for ext in ('ogg', 'mp3'):
+            self.do_upload_as_user('bob', ext)
+        for ext in ('flac', 'wav'):
+            self.do_upload_as_user('alice', ext)
+
+        response = self.client.get('/bob/music/m3u')
+        self.assertTrue("playlist-bob.m3u" in response['Content-Disposition'])
+        self.assertContains(response,
+                "http://testserver/audiotracks/audio_files/bob/audio_file.ogg")
+        self.assertNotContains(response,
+                "http://testserver/audiotracks/audio_files/alice/audio_file.flac")
+
+        response = self.client.get('/music/m3u')
+        self.assertTrue("playlist-testserver.m3u" in response['Content-Disposition'])
+        self.assertContains(response,
+                "http://testserver/audiotracks/audio_files/bob/audio_file.ogg")
+        self.assertContains(response,
+                "http://testserver/audiotracks/audio_files/alice/audio_file.flac")

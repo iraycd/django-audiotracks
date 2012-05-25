@@ -2,11 +2,12 @@ import os
 
 from django.utils.translation  import ugettext
 from django.contrib.auth.decorators import login_required
+from django.contrib.sites.models import RequestSite
 from django.conf import settings
 from django.core.files.uploadhandler import TemporaryFileUploadHandler
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core import urlresolvers
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_exempt
@@ -179,3 +180,18 @@ class JavaScriptView(TemplateView):
         return super(JavaScriptView, self).render_to_response(context, **response_kwargs)
 
 player_script = JavaScriptView.as_view(template_name="audiotracks/player.js")
+
+
+def m3u(request, username=None):
+    tracks = Track.objects
+    if username:
+        tracks = tracks.filter(user__username=username)
+    tracks = tracks.order_by('-created_at').all()
+    response = HttpResponse(content_type="audio/x-mpequrl")
+    site = RequestSite(request)
+    filename = "playlist-%s.m3u" % (site.name if username is None else username)
+    response['Content-Disposition'] = 'attachment; filename=%s' % filename
+    for track in tracks:
+        url = 'http://%s/%s' % (site.domain, track.audio_file.url.strip("/"))
+        response.write(url + "\n")
+    return response
