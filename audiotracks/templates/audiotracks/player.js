@@ -35,6 +35,9 @@ $(document).ready(function() {
   $('audio').mediaelementplayer({
     audioWidth: '100%', 
     pluginPath: '{{ STATIC_URL }}mediaelement-2.8.2/',
+    error: function(domObj) {
+        $(domObj).bind('play', function() { playNext(domObj); });
+    },
     success: function(me, domObj) {
       var container = $(domObj).parents('.player-container');
       container.next().find('.audio-type').html( me.pluginType );
