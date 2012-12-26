@@ -20,7 +20,7 @@ def slugify_uniquely(value, obj, slugfield="slug"):
         filter_params[slugfield] = potential
         obj_count = obj.__class__.objects.filter(**filter_params).count()
         if not obj_count:
-            return potential
+            return potential[:50]
         # we hit a conflicting slug, so bump the suffix & try again
         suffix += 1
 
