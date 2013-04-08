@@ -1,5 +1,6 @@
-from setuptools import setup, find_packages
+from setuptools import setup
  
+
 setup(
     name='django-audiotracks',
     version='0.2.1',
@@ -10,7 +11,7 @@ setup(
     license='MIT',
     author_email='contact@alexmarandon.com',
     url='https://github.com/amarandon/django-audiotracks',
-    packages=find_packages(),
+    packages=['audiotracks'],
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Environment :: Web Environment',
