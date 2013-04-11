@@ -1,6 +1,20 @@
 Changes
 ~~~~~~~
 
+
+v0.2.2 (2013-04-08)
+___________________ 
+
+- make sure slug doesn't get too long
+- skip tracks MediaElement.js cannot read
+- exclude example_project from distribution
+
+
+v0.2.1 (2012-05-25)
+___________________
+
+- fix doc
+
 v0.2 (2012-05-25)
 _________________
 

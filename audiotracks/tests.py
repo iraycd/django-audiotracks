@@ -28,23 +28,24 @@ class TestViews(TestCase):
         if os.path.exists(settings.MEDIA_ROOT):
             shutil.rmtree(settings.MEDIA_ROOT)
 
-    def get_upload_file(self, ext):
-        filename = "audio_file." + ext
+    def get_upload_file(self, name, ext):
+        filename = name + "." + ext
         filepath = os.path.join(TEST_DATA_DIR, filename)
         filehandle = open(filepath)
         return filename, filehandle
 
-    def do_upload(self, ext):
-        filename, filehandle = self.get_upload_file(ext)
+    def do_upload(self, filename="audio_file", ext="ogg"):
+        filename, filehandle = self.get_upload_file(filename, ext)
         resp = self.client.post('/music/upload', {
             'name': filename,
             'audio_file': filehandle
-            })
+            }, follow=True)
+        return resp
 
     def do_upload_as_user(self, username, ext='ogg'):
         response = self.client.logout()
         response = self.client.login(username=username, password='secret')
-        self.do_upload(ext)
+        self.do_upload(ext=ext)
         self.assert_(os.path.exists(os.path.join(settings.MEDIA_ROOT,
             "audiotracks", "audio_files", username, "audio_file.%s" % ext)),
             "Upload path should contain username")
@@ -66,38 +67,54 @@ class TestViews(TestCase):
 
     def test_upload_ogg(self):
         "OGG file upload"
-        self.do_upload('ogg')
+        self.do_upload(ext='ogg')
         track = self.verify_upload()
         self.assertEquals(track.mimetype, "audio/ogg")
         self.assertEquals(track.filetype, "Ogg Vorbis")
 
     def test_upload_flac(self):
         "Flac file upload"
-        self.do_upload('flac')
+        self.do_upload(ext='flac')
         track = self.verify_upload()
         self.assertEquals(track.mimetype, "audio/flac")
 
     def test_upload_mp3(self):
         "MP3 file upload"
-        self.do_upload('mp3')
+        self.do_upload(ext='mp3')
         track = self.verify_upload()
         self.assertEquals(track.mimetype, "audio/mpeg")
 
     def test_upload_wav(self):
         "WAV file upload"
-        self.do_upload('wav')
+        self.do_upload(ext='wav')
         # WAV file metadata not currently supported
         track = Track.objects.get(id=1)
         assert 'wav' in track.audio_file.name
         self.assertEquals(track.slug, "audio_file")
         self.assertEquals(track.mimetype, "audio/x-wav")
 
+    def test_upload_file_with_long_name(self):
+        """
+        Check that the slug isn't over 50 characters.
+
+        SQLite ignores the VARCHAR size limit, so when testing against it, we
+        don't notice that the backend doesn't properly shorten slugs to 50
+        characters. Here we check it explicitely with an assertion.
+        """
+        self.do_upload(
+            'Steinregen Dubsystem ls. Zongosound - Outernational Fire Dub',
+            'mp3')
+        # WAV file metadata not currently supported
+        track = Track.objects.get(id=1)
+        self.assertEquals(track.slug,
+            "steinregen-dubsystem-ls-zongosound-outernational-f")
+
     def test_edit_track_attributes(self, ext='ogg'):
         """
         Edit track attributes and verify that they get saved into the audiofile
         itself
         """
-        self.do_upload(ext)
+        self.do_upload(ext=ext)
         track = Track.objects.get(genre="Test Data")
         self.do_edit(track, slug='new-title')
         track = Track.objects.get(genre="New Genre")
@@ -119,7 +136,7 @@ class TestViews(TestCase):
     def test_edit_wav(self):
         "Edit WAV track"
         ext = 'wav'
-        self.do_upload(ext)
+        self.do_upload(ext=ext)
         track = Track.objects.get(slug="audio_file")
         self.do_edit(track, slug='new-title')
         track = Track.objects.get(genre="New Genre")
@@ -129,11 +146,11 @@ class TestViews(TestCase):
         "Update audio file for a track"
 
         # Upload mp3
-        self.do_upload('mp3')
+        self.do_upload(ext='mp3')
 
         # Update track with ogg file
         track_id = Track.objects.get(genre="Test Data").id
-        filename, filehandle = self.get_upload_file('ogg')
+        filename, filehandle = self.get_upload_file('audio_file', 'ogg')
         resp = self.client.post('/music/edit/%s' % track_id, {
             'name': filename,
             'audio_file': filehandle,
@@ -148,7 +165,7 @@ class TestViews(TestCase):
 
     def test_delete_image(self):
         "Attach and remove track image"
-        self.do_upload('ogg')
+        self.do_upload(ext='ogg')
         track = Track.objects.get(genre="Test Data")
         self.do_edit(track, slug='new-title',
             image=open(os.path.join(TEST_DATA_DIR, 'image.jpg')))
@@ -161,14 +178,14 @@ class TestViews(TestCase):
 
     def test_confirm_delete_track(self):
         "Confirm delete track"
-        self.do_upload('ogg')
+        self.do_upload(ext='ogg')
         track = Track.objects.get(genre="Test Data")
         resp = self.client.get('/music/confirm_delete/%s' % track.id)
         assert 'Are you sure' in resp.content
 
     def test_delete_track(self):
         "Delete track"
-        self.do_upload('ogg')
+        self.do_upload(ext='ogg')
         track = Track.objects.get(genre="Test Data")
         resp = self.client.post('/music/delete', {'track_id': track.id,
             'came_from': '/somewhere'})
@@ -177,7 +194,7 @@ class TestViews(TestCase):
     def test_latest(self):
         # Create 7 tracks
         for n in range(1, 8):
-            self.do_upload('ogg')
+            self.do_upload(ext='ogg')
             track = Track.objects.get(title="django-audiotracks test file")
             track.title = "Track %s" % n
             track.save()
@@ -198,7 +215,7 @@ class TestViews(TestCase):
         for name in ('bob', 'alice'):
             self.client.login(username=name, password='secret')
             for n in range(1, 5):
-                self.do_upload('ogg')
+                self.do_upload(ext='ogg')
                 track = Track.objects.get(title="django-audiotracks test file")
                 track.title = "%s Track %s" % (name.capitalize(), n)
                 track.save()
@@ -229,7 +246,7 @@ class TestViews(TestCase):
     def test_prevent_duplicate_slug(self):
         "Prevent duplicate slug for the same user"
         # Upload a track
-        self.do_upload('ogg')
+        self.do_upload(ext='ogg')
 
         # Upload another one as another user
         self.do_upload_as_user('alice')
